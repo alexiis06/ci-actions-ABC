@@ -1,0 +1,37 @@
+name: CI XXX
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: [ '8.1', '8.2', '8.3' ]
+
+    steps:
+      - name: Checkout del codi
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Instal·lar dependències
+        run: composer install --no-interaction --no-progress
+
+      - name: Executar tests
+        run: ./vendor/bin/phpunit --log-junit resultats.xml
+
+      - name: Pujar artefacte
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultats-XXX
+          path: resultats.xml
