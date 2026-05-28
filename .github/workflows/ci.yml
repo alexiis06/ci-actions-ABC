@@ -1,4 +1,4 @@
-name: CI XXX
+name: CI ABC
 
 on:
   push:
